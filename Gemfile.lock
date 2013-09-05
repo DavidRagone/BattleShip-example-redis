@@ -1,7 +1,8 @@
-PATH
-  remote: /Users/dmragone/Projects/Ruby/BattleShip/battle_ship
+GIT
+  remote: git://github.com/DavidRagone/BattleShip.git
+  revision: a11b0943db200bd02dffd583b4efcc8b6083afa2
   specs:
-    battle_ship (0.1.0)
+    battle_ship (0.1.1)
       activesupport
 
 GEM
