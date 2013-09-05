@@ -23,5 +23,6 @@ after_fork do |server, worker|
   end
 
   defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
-  defined?(Redis) and Redis.new(url: ENV['redis'])
+  uri = URI.parse(ENV["REDISTOGO_URL"])
+  $redis = Redis.new(host: uri.host, port: uri.port, password: uri.password)
 end
