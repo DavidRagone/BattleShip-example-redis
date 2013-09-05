@@ -12,7 +12,8 @@ before_fork do |server, worker|
   begin
     defined?(Redis) and Redis.current.quit
   rescue
-    Redis.current.instance_variable_set(:@client, Redis::Client.new(url: ENV['redis']))
+    Redis.current = $redis
+    #Redis.current.instance_variable_set(:@client, Redis::Client.new(url: ENV['redis']))
     Redis.current.quit
   end
 end
