@@ -56,10 +56,9 @@
     <p>
       We're using the 
       <%= link_to 'BattleShip gem', 'https://rubygems.org/gems/battle_ship' %>!
-      (take a look at the <%= link_to 'source on Github', 'https://github.com/DavidRagone/BattleShip' %>)
     </p>
     <p>
-      BattleShip adds some extra work to Rails caching that results in a count of how many hits and misses you have for each namespace (assumed to be the class name, or the part of the cache key before the first underscore).
+      BattleShip adds some extra code to Rails' caching that results in a count of how many hits and misses you have for each namespace (assumed to be the class name, or the part of the cache key before the first underscore).
     </p>
     <p>In this particular example, when you search for a record, the method looks like this:</p>
     <pre>
@@ -68,7 +67,7 @@
         redirect_to :root
       end
     </pre>
-    <p>The assumed use case is that you are caching frequently hit objects (in this case, the User objects). Here we're throwing out the result, because what we really care about is in the root method:</p>
+    <p>The assumed use case is that you are caching frequently hit objects (in this case, the User objects). Here we're throwing out the result, because what we really care about is the resulting count. The root method looks like:</p>
     <pre>
       def get
         @hits = Rails.cache.hits("user") || 0
