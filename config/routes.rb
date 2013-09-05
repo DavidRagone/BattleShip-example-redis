@@ -1,4 +1,7 @@
 BattleShipRedis::Application.routes.draw do
+  root 'sample#get'
+  post 'sample', controller: :sample, action: :find_user
+  post 'create', controller: :sample, action: :create_user
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

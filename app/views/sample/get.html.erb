@@ -1,0 +1,89 @@
+<header>
+  <span id='gem-name'>BattleShip</span>
+  <span id='github'><a href='https://github.com/DavidRagone/BattleShip' rel='prefetch'>Code</a></span>
+  <span id='author'><a href='http://www.dmragone.com' rel='prefetch'>Author</a></span>
+  <span id='examples'>Examples:
+    Redis (<a href='http://localhost:3000/'>site</a> | <a href='http://localhost:3000/'>code</a>)
+    Memcache (<a href='http://localhost:3000/'>site</a> | <a href='http://localhost:3000/'>code</a>)
+</header>
+<div id='content'>
+  <% if flash[:alert] %>
+    <div class='flash alert'>
+      <%= flash[:alert]%>
+    </div>
+  <% end %>
+  <div class='clearfix'>
+    <div id='page-title'>
+      <h2>Here be cached</h2>
+      <h1>&lt;User&gt</h1>
+      <h3>objects</h3>
+    </div>
+    <div id='right-info'>
+      <div class='cache-count'>
+        <p>Hit Count</p>
+        <div class='count'>
+          <%= @hits %>
+        </div>
+      </div>
+      <div class='cache-count'>
+        <p>Miss Count</p>
+        <div class='count'>
+          <%= @misses %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='break'></div>
+  <div id='forms'>
+    <div class='form'>
+      <p>Try reloading User #</p>
+      <%= form_tag('/sample', method: 'post') do %>
+        <input type='text' name='id' value='1'>
+        <input type='submit' class='submit-button' value='Read'>
+      <% end %>
+    </div>
+    <div class='form'>
+      <p>Create a User record with id #</p>
+      <%= form_tag('/create', method: 'post') do %>
+        <input type='text' name='id' value='1'>
+        <input type='submit' class='submit-button' value='Write'>
+      <% end %>
+    </div>
+  </div>
+  <div class='break'></div>
+  <div id='explanation'>
+    <h3>What is going on here?</h3>
+    <p>
+      We're using the 
+      <%= link_to 'BattleShip gem', 'https://rubygems.org/gems/battle_ship' %>!
+      (take a look at the <%= link_to 'source on Github', 'https://github.com/DavidRagone/BattleShip' %>)
+    </p>
+    <p>
+      BattleShip adds some extra work to Rails caching that results in a count of how many hits and misses you have for each namespace (assumed to be the class name, or the part of the cache key before the first underscore).
+    </p>
+    <p>In this particular example, when you search for a record, the method looks like this:</p>
+    <pre>
+      def find_user
+        Rails.cache.read("user_#{params[:id]}")
+        redirect_to :root
+      end
+    </pre>
+    <p>The assumed use case is that you are caching frequently hit objects (in this case, the User objects). Here we're throwing out the result, because what we really care about is in the root method:</p>
+    <pre>
+      def get
+        @hits = Rails.cache.hits("user") || 0
+        @misses = Rails.cache.misses("user") || 0
+      end
+    </pre>
+    <p>
+      This is where the "Hit Count" and "Miss Count" come from. 
+      <%= link_to 'BattleShip', 'https://rubygems.org/gems/battle_ship' %>
+      adds the methods #hits and #misses, which both take the namespace (generally assumed to be the class name).
+    </p>
+    <h3>Why use BattleShip?</h3>
+    <p>If you make use of Rails caching, you may lack visibility into what your hit rate is. BattleShip fixes that. You can take frequent reads of the hit and miss counts (perhaps hourly or on each deploy), and know whether changes you're making or new caching strategies are paying off.
+    </p>
+    <h3>Why are there multiple examples?</h3>
+    <p>Mostly for your peace of mind. I wanted to provide sample apps that you could look at and use.</p>
+  </div>
+</div>
